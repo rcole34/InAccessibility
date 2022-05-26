@@ -28,7 +28,7 @@ struct Stock: Identifiable {
         let goingUp = Bool.random()
         self.goingUp = goingUp
         
-        self.change = goingUp ? -Double.random(in: 3.12...149.44) : Double.random(in: 3.00...149.34)
+        self.change = goingUp ? Double.random(in: 3.12...149.44) : -Double.random(in: 3.00...149.34)
         
     }
     
@@ -48,16 +48,16 @@ struct Stock: Identifiable {
     
     static func all() -> [Stock] {
         [
-            Stock(name: "Apple", shortName: "AAPL", favorite: false),
-            Stock(name: "Nintendo", shortName: "NNTD", favorite: false),
-            Stock(name: "Vivid", shortName: "VVID", favorite: false),
-            Stock(name: "Oil Co", shortName: "OILC", favorite: false),
-            Stock(name: "Google", shortName: "GOOG", favorite: false),
-            Stock(name: "Apple", shortName: "AAPL", favorite: false),
-            Stock(name: "Nintendo", shortName: "NNTD", favorite: false),
-            Stock(name: "Vivid", shortName: "VVID", favorite: false),
-            Stock(name: "Oil Co", shortName: "OILC", favorite: false),
-            Stock(name: "Google", shortName: "GOOG", favorite: false),
+            Stock(name: "Meta", shortName: "FB", favorite: false),
+            Stock(name: "Snapchat", shortName: "SNAP", favorite: false),
+            Stock(name: "Uber", shortName: "UBER", favorite: false),
+            Stock(name: "Twitter", shortName: "TWTR", favorite: false),
+            Stock(name: "Amazon", shortName: "AMZN", favorite: false),
+            Stock(name: "Spotify", shortName: "SPOT", favorite: false),
+            Stock(name: "Disney", shortName: "DIS", favorite: false),
+            Stock(name: "Microsoft", shortName: "MSFT", favorite: false),
+            Stock(name: "Netflix", shortName: "NFLX", favorite: false),
+            Stock(name: "Zoom", shortName: "ZM", favorite: false),
         ]
     }
 }

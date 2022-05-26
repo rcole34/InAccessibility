@@ -15,14 +15,14 @@ struct StockPrice: View {
         VStack(alignment: .trailing, spacing: 2) {
             Text("\(String(format: "%.2f",stock.stockPrice))")
             
-            Text("\(String(format: "%.2f",stock.change))")
-            
+            Text("\(stock.goingUp ? "+" : "")\(String(format: "%.2f",stock.change))")
                 .bold()
                 .font(.caption)
                 .padding(4)
-                .background(stock.goingUp ? Color.green : Color.red)
+                .background(stock.goingUp ? Color.greenA11y : Color.redA11y)
                 .cornerRadius(6)
                 .foregroundColor(.white)
+                .accessibilityIgnoresInvertColors()
         }
     }
 }

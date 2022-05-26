@@ -7,9 +7,18 @@
 
 import SwiftUI
 
+enum MainAlertItem: String, Identifiable {
+    case settings
+    case more
+    
+    var id: String { self.rawValue }
+}
+
 struct MainView: View {
     
     @State var showDetailStock: Stock?
+    @State private var alertItem: MainAlertItem?
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     var body: some View {
         NavigationView {
@@ -24,6 +33,15 @@ struct MainView: View {
             .sheet(item: $showDetailStock) { stock in
                 DetailView(stock: stock)
             }
+            .alert(item: $alertItem) { item in
+                switch item {
+                case .more:
+                    return Alert(title: Text("There are no more favorites to show"))
+                    
+                case .settings:
+                    return Alert(title: Text("There are no settings available for this sample app"))
+                }
+            }
         }
     }
     
@@ -35,20 +53,31 @@ struct MainView: View {
                     .onTapGesture {
                         showDetailStock = stock
                     }
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityHint(Text("Show details for \(stock.name)"))
             }
         } header: {
-            HStack {
+            DynamicHStack {
                 Text("Favorite Stocks")
-                Spacer()
-                Button {
-                    
-                } label: {
-                    Text("Tap for more")
+                    .foregroundColor(.secondaryTextA11y)
+                
+                if !dynamicTypeSize.isAccessibilitySize {
+                    Spacer()
                 }
                 
+                Button {
+                    alertItem = .more
+                } label: {
+                    Text("Show more")
+                        .frame(minHeight: 44)
+                        .accessibilityLabel(Text("Show more favorites"))
+                        .accessibilityInputLabels([Text("Show more")])
+                }
             }
         } footer: {
             Text("Favorite stocks are updated every 1 minute.")
+                .foregroundColor(.secondaryTextA11y)
+                .padding(.vertical, dynamicTypeSize.isAccessibilitySize ? 8 : 0)
         }
         
     }
@@ -61,9 +90,12 @@ struct MainView: View {
                     .onTapGesture {
                         showDetailStock = stock
                     }
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityHint(Text("Show details for \(stock.name)"))
             }
         } header: {
             Text("All Stocks")
+                .foregroundColor(.secondaryTextA11y)
         }
     }
     
@@ -71,12 +103,40 @@ struct MainView: View {
         Group {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    
+                    alertItem = .settings
                 } label: {
                     Image(systemName: "gearshape.fill")
+                        .accessibilityLabel(Text("Settings"))
+                        .frame(minWidth: 44, minHeight: 44, alignment: .leading)
                 }
             }
             
+        }
+    }
+}
+
+// very simplified version of a stack that will be horizontal for non-accessibility dynamic type sizes, but adjust to vertical for accessibility sizes.
+// would also probably want to take params for stack view alignments/spacings
+struct DynamicHStack<Content: View>: View {
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
+    var content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
+    var body: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading) {
+                    content
+                }
+            } else {
+                HStack {
+                    content
+                }
+            }
         }
     }
 }

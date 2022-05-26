@@ -15,3 +15,13 @@ struct InAccessibilityApp: App {
         }
     }
 }
+
+extension Color {
+    static let secondaryTextA11y = Color("secondaryTextA11y")
+    static let greenA11y = Color("greenA11y")
+    static let redA11y = Color("redA11y")
+}
+
+/// ✅ audio graphs
+/// ✅ accessibility elements for data points?
+/// ✅ reduce animation on graph if preference set
